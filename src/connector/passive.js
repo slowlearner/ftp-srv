@@ -36,16 +36,16 @@ class Passive extends Connector {
       let idleServerTimeout;
 
       const connectionHandler = (socket) => {
-        if (!ip.isEqual(this.connection.commandSocket.remoteAddress, socket.remoteAddress)) {
-          this.log.error({
-            pasv_connection: socket.remoteAddress,
-            cmd_connection: this.connection.commandSocket.remoteAddress
-          }, 'Connecting addresses do not match');
+        // if (!ip.isEqual(this.connection.commandSocket.remoteAddress, socket.remoteAddress)) {
+        //   this.log.error({
+        //     pasv_connection: socket.remoteAddress,
+        //     cmd_connection: this.connection.commandSocket.remoteAddress
+        //   }, 'Connecting addresses do not match');
 
-          socket.destroy();
-          return this.connection.reply(550, 'Remote addresses do not match')
-          .finally(() => this.connection.close());
-        }
+        //   socket.destroy();
+        //   return this.connection.reply(550, 'Remote addresses do not match')
+        //   .finally(() => this.connection.close());
+        // }
         clearTimeout(idleServerTimeout);
 
         this.log.trace({port, remoteAddress: socket.remoteAddress}, 'Passive connection fulfilled.');
