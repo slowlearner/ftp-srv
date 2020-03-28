@@ -21,6 +21,7 @@ class FtpConnection extends EventEmitter {
     this.bufferSize = false;
     this._restByteCount = 0;
     this._secure = false;
+    this.lastActivity = new Date();
 
     this.connector = new BaseConnector(this);
 
@@ -42,6 +43,7 @@ class FtpConnection extends EventEmitter {
   }
 
   _handleData(data) {
+    this.lastActivity = new Date();
     const messages = _.compact(data.toString(this.encoding).split('\r\n'));
     this.log.trace(messages);
     return Promise.mapSeries(messages, (message) => this.commands.handle(message));
