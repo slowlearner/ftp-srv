@@ -46,7 +46,12 @@ class FtpConnection extends EventEmitter {
     this.lastActivity = new Date();
     const messages = _.compact(data.toString(this.encoding).split('\r\n'));
     this.log.trace(messages);
-    return Promise.mapSeries(messages, (message) => this.commands.handle(message));
+    return Promise.mapSeries(messages, (message) => this.commands.handle(message))
+    .then(() => {
+      if(this.commands.previousCommand && this.commands.previousCommand.directive !== 'NOOP') {
+        this.lastActivity = new Date();
+      }
+    })
   }
 
   get ip() {
